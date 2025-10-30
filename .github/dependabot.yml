@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "MonoGame.Framework*"
+      - dependency-name: "MonoGame.Content.Builder*"
