@@ -41,7 +41,7 @@ jobs:
       run: dotnet tool restore
     - name: Build
       run: |
-        dotnet publish src/Platforms/DesktopGL/MyGame.DesktopGL.csproj -c Release ${{ matrix.rids }}
+        dotnet publish src/Platforms/DesktopGL/Euphoria.DesktopGL.csproj -c Release ${{ matrix.rids }}
       shell: bash
     - name: Upload
       uses: actions/upload-artifact@v4

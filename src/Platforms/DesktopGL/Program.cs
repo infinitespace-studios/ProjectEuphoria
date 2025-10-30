@@ -1,2 +1,2 @@
-﻿using var game = new Core.Game1();
+﻿using var game = new Core.EuphoriaGame();
 game.Run();
