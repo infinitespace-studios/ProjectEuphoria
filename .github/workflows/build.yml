@@ -35,6 +35,11 @@ jobs:
         dotnet-version: 9.0.x
     - name: Setup for MonoGame
       uses: infinitespace-studios/monogame-actions/install-wine@v1.0
+    - name: Setup xvfb
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
     - name: Restore dependencies
       run: dotnet restore
     - name: Restore tools
