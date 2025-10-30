@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{153D720E-C265-2F70-E151-AC037C2BB921}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGame.DesktopGL", "src\Platforms\DesktopGL\MyGame.DesktopGL.csproj", "{7D20DE0B-F403-67CC-31CD-4274081049F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Euphoria.DesktopGL", "src\Platforms\DesktopGL\Euphoria.DesktopGL.csproj", "{7D20DE0B-F403-67CC-31CD-4274081049F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
