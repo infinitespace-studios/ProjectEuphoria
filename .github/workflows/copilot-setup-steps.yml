@@ -1,0 +1,27 @@
+# GitHub Copilot setup steps for VectorRumble
+# This workflow sets up the environment for CoPilot to work with MonoGame effects compilation
+# It installs .NET 9 and Wine which are required for building the project
+
+name: CoPilot Setup Steps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
+    - name: Setup Wine for MonoGame Effects
+      uses: MonoGame/monogame-actions/install-wine@v1.0
+        
+    - name: Verify setup
+      run: |
+        dotnet --version
+        wine --version
+        echo "CoPilot environment setup complete!"
+        echo "Environment ready for MonoGame effects compilation"
