@@ -1,4 +1,4 @@
-# GitHub Copilot setup steps for VectorRumble
+# GitHub Copilot setup steps for this project
 # This workflow sets up the environment for CoPilot to work with MonoGame effects compilation
 # It installs .NET 9 and Wine which are required for building the project
 
