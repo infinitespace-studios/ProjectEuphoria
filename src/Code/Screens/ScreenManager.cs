@@ -199,30 +199,49 @@ public class ScreenManager
         var fullScreenRect = new Rectangle(0, 0, viewport.Width, viewport.Height);
         bool hasOverlays = false;
         
-        _spriteBatch.Begin();
-        
-        // Apply tint overlay if there's a popup
+        // Check if we need to draw any overlays
         if (hasPopup)
         {
-            _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * 0.5f);
             hasOverlays = true;
         }
-        
-        // Draw black overlay for FadeToBlack transitions
-        foreach (var screen in _screens)
+        else
         {
-            if (screen.Transition is FadeToBlackTransition fadeToBlack)
+            foreach (var screen in _screens)
             {
-                float blackAlpha = fadeToBlack.GetBlackAlpha();
-                if (blackAlpha > 0f)
+                if (screen.Transition is FadeToBlackTransition fadeToBlack && fadeToBlack.GetBlackAlpha() > 0f)
                 {
-                    _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * blackAlpha);
                     hasOverlays = true;
+                    break;
                 }
             }
         }
         
-        _spriteBatch.End();
+        // Only draw overlays if needed
+        if (hasOverlays)
+        {
+            _spriteBatch.Begin();
+            
+            // Apply tint overlay if there's a popup
+            if (hasPopup)
+            {
+                _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * 0.5f);
+            }
+            
+            // Draw black overlay for FadeToBlack transitions
+            foreach (var screen in _screens)
+            {
+                if (screen.Transition is FadeToBlackTransition fadeToBlack)
+                {
+                    float blackAlpha = fadeToBlack.GetBlackAlpha();
+                    if (blackAlpha > 0f)
+                    {
+                        _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * blackAlpha);
+                    }
+                }
+            }
+            
+            _spriteBatch.End();
+        }
     }
 
     /// <summary>
