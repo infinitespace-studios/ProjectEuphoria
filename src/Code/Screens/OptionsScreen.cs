@@ -13,6 +13,10 @@ public class OptionsScreen : Screen
 
     public override void Update(GameTime gameTime)
     {
+        // Don't process input if we're transitioning off
+        if (TransitionState == Transitions.TransitionState.TransitionOff)
+            return;
+
         var keyboardState = Keyboard.GetState();
 
         // Press Escape or O to close options screen

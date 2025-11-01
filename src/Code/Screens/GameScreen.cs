@@ -14,6 +14,10 @@ public class GameScreen : Screen
 
     public override void Update(GameTime gameTime)
     {
+        // Don't process input if we're transitioning off
+        if (TransitionState == Transitions.TransitionState.TransitionOff)
+            return;
+
         var keyboardState = Keyboard.GetState();
 
         // Press M to return to menu with crossfade

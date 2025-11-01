@@ -21,6 +21,10 @@ public class MenuScreen : Screen
 
     public override void Update(GameTime gameTime)
     {
+        // Don't process input if we're transitioning off
+        if (TransitionState == TransitionState.TransitionOff)
+            return;
+
         var keyboardState = Keyboard.GetState();
 
         // Press 1 for instant transition to GameScreen
