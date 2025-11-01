@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Core.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,6 +9,7 @@ public class EuphoriaGame : Game
 {
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private ScreenManager _screenManager;
 
     public EuphoriaGame()
     {
@@ -18,7 +20,8 @@ public class EuphoriaGame : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+        // Initialize the screen manager
+        _screenManager = new ScreenManager(GraphicsDevice, Content);
 
         base.Initialize();
     }
@@ -27,7 +30,8 @@ public class EuphoriaGame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        // Add an initial screen (e.g., GameScreen)
+        _screenManager.AddScreen(new GameScreen());
     }
 
     protected override void Update(GameTime gameTime)
@@ -35,7 +39,8 @@ public class EuphoriaGame : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        // Update the screen manager
+        _screenManager?.Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -44,7 +49,8 @@ public class EuphoriaGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // TODO: Add your drawing code here
+        // Draw the screen manager
+        _screenManager?.Draw(gameTime);
 
         base.Draw(gameTime);
     }
