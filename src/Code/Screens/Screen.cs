@@ -21,6 +21,11 @@ public abstract class Screen
     protected ContentManager Content { get; private set; }
 
     /// <summary>
+    /// Gets the shared SpriteBatch for rendering.
+    /// </summary>
+    protected SpriteBatch SpriteBatch => ScreenManager?.SpriteBatch;
+
+    /// <summary>
     /// Gets or sets the ScreenManager that manages this screen.
     /// </summary>
     public ScreenManager ScreenManager { get; set; }

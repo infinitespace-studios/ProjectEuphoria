@@ -8,20 +8,6 @@ namespace Core.Screens;
 /// </summary>
 public class LoadingScreen : Screen
 {
-    private SpriteBatch _spriteBatch;
-
-    public override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        base.LoadContent();
-    }
-
-    public override void UnloadContent()
-    {
-        _spriteBatch?.Dispose();
-        base.UnloadContent();
-    }
-
     public override void Update(GameTime gameTime)
     {
         // Add loading logic here
@@ -31,8 +17,8 @@ public class LoadingScreen : Screen
     {
         GraphicsDevice.Clear(Color.Black);
 
-        _spriteBatch.Begin();
+        SpriteBatch.Begin();
         // Add loading screen visuals here
-        _spriteBatch.End();
+        SpriteBatch.End();
     }
 }

@@ -15,6 +15,7 @@ public class ScreenManager
     private readonly List<Screen> _screensToRemove = new();
     private readonly GraphicsDevice _graphicsDevice;
     private readonly ContentManager _content;
+    private readonly SpriteBatch _spriteBatch;
 
     /// <summary>
     /// Initializes a new instance of the ScreenManager class.
@@ -25,7 +26,13 @@ public class ScreenManager
     {
         _graphicsDevice = graphicsDevice;
         _content = content;
+        _spriteBatch = new SpriteBatch(graphicsDevice);
     }
+
+    /// <summary>
+    /// Gets the shared SpriteBatch for all screens.
+    /// </summary>
+    public SpriteBatch SpriteBatch => _spriteBatch;
 
     /// <summary>
     /// Adds a screen to the screen manager.

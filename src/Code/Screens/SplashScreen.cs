@@ -8,20 +8,6 @@ namespace Core.Screens;
 /// </summary>
 public class SplashScreen : Screen
 {
-    private SpriteBatch _spriteBatch;
-
-    public override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        base.LoadContent();
-    }
-
-    public override void UnloadContent()
-    {
-        _spriteBatch?.Dispose();
-        base.UnloadContent();
-    }
-
     public override void Update(GameTime gameTime)
     {
         // Add splash screen logic here (e.g., timer to transition to menu)
@@ -31,8 +17,8 @@ public class SplashScreen : Screen
     {
         GraphicsDevice.Clear(Color.White);
 
-        _spriteBatch.Begin();
+        SpriteBatch.Begin();
         // Add splash screen visuals here
-        _spriteBatch.End();
+        SpriteBatch.End();
     }
 }

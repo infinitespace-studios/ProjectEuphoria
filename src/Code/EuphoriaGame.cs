@@ -8,7 +8,6 @@ namespace Core;
 public class EuphoriaGame : Game
 {
     private readonly GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
     private ScreenManager _screenManager;
 
     public EuphoriaGame()
@@ -28,8 +27,6 @@ public class EuphoriaGame : Game
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         // Add an initial screen (e.g., GameScreen)
         _screenManager.AddScreen(new GameScreen());
     }

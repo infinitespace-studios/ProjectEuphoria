@@ -8,20 +8,6 @@ namespace Core.Screens;
 /// </summary>
 public class MenuScreen : Screen
 {
-    private SpriteBatch _spriteBatch;
-
-    public override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        base.LoadContent();
-    }
-
-    public override void UnloadContent()
-    {
-        _spriteBatch?.Dispose();
-        base.UnloadContent();
-    }
-
     public override void Update(GameTime gameTime)
     {
         // Add menu input handling here
@@ -31,8 +17,8 @@ public class MenuScreen : Screen
     {
         GraphicsDevice.Clear(Color.DarkBlue);
 
-        _spriteBatch.Begin();
+        SpriteBatch.Begin();
         // Add menu visuals here
-        _spriteBatch.End();
+        SpriteBatch.End();
     }
 }
