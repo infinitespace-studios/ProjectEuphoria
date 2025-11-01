@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Core.Screens.Transitions;
 
 namespace Core.Screens;
 
@@ -16,6 +17,7 @@ public class ScreenManager
     private readonly GraphicsDevice _graphicsDevice;
     private readonly ContentManager _content;
     private readonly SpriteBatch _spriteBatch;
+    private Texture2D _blankTexture;
 
     /// <summary>
     /// Initializes a new instance of the ScreenManager class.
@@ -27,6 +29,10 @@ public class ScreenManager
         _graphicsDevice = graphicsDevice;
         _content = content;
         _spriteBatch = new SpriteBatch(graphicsDevice);
+        
+        // Create a 1x1 white texture for tinting and overlays
+        _blankTexture = new Texture2D(graphicsDevice, 1, 1);
+        _blankTexture.SetData(new[] { Color.White });
     }
 
     /// <summary>
@@ -43,6 +49,18 @@ public class ScreenManager
         screen.ScreenManager = this;
         screen.Initialize(_graphicsDevice, _content);
         screen.LoadContent();
+        
+        // Start transition if one is set
+        if (screen.Transition != null)
+        {
+            screen.TransitionState = TransitionState.TransitionOn;
+            screen.Transition.Start(true);
+        }
+        else
+        {
+            screen.TransitionState = TransitionState.Active;
+        }
+        
         _screensToAdd.Add(screen);
     }
 
@@ -52,8 +70,17 @@ public class ScreenManager
     /// <param name="screen">The screen to remove.</param>
     public void RemoveScreen(Screen screen)
     {
-        screen.UnloadContent();
-        _screensToRemove.Add(screen);
+        // Start transition off if one is set
+        if (screen.Transition != null && screen.TransitionState != TransitionState.Hidden)
+        {
+            screen.TransitionState = TransitionState.TransitionOff;
+            screen.Transition.Start(false);
+        }
+        else
+        {
+            screen.UnloadContent();
+            _screensToRemove.Add(screen);
+        }
     }
 
     /// <summary>
@@ -74,7 +101,12 @@ public class ScreenManager
     /// <param name="screen">The screen to transition to.</param>
     public void TransitionTo(Screen screen)
     {
-        RemoveAllScreens();
+        // Transition out all existing screens
+        foreach (var existingScreen in _screens)
+        {
+            RemoveScreen(existingScreen);
+        }
+        
         AddScreen(screen);
     }
 
@@ -97,12 +129,33 @@ public class ScreenManager
         }
         _screensToAdd.Clear();
 
-        // Update all active screens
+        // Update all active screens and their transitions
         for (int i = _screens.Count - 1; i >= 0; i--)
         {
-            if (_screens[i].IsActive)
+            var screen = _screens[i];
+            
+            // Update transitions
+            if (screen.Transition != null)
             {
-                _screens[i].Update(gameTime);
+                screen.Transition.Update(gameTime);
+                
+                // Update transition state
+                if (screen.TransitionState == TransitionState.TransitionOn && screen.Transition.IsComplete)
+                {
+                    screen.TransitionState = TransitionState.Active;
+                }
+                else if (screen.TransitionState == TransitionState.TransitionOff && screen.Transition.Position <= 0f)
+                {
+                    screen.TransitionState = TransitionState.Hidden;
+                    screen.UnloadContent();
+                    _screensToRemove.Add(screen);
+                    continue;
+                }
+            }
+            
+            if (screen.IsActive)
+            {
+                screen.Update(gameTime);
             }
         }
     }
@@ -113,11 +166,51 @@ public class ScreenManager
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public void Draw(GameTime gameTime)
     {
+        bool hasPopup = false;
+        
+        // Check if there's a popup screen
         foreach (var screen in _screens)
         {
-            if (screen.IsActive)
+            if (screen.IsPopup && screen.IsActive)
+            {
+                hasPopup = true;
+                break;
+            }
+        }
+        
+        for (int i = 0; i < _screens.Count; i++)
+        {
+            var screen = _screens[i];
+            
+            if (screen.IsActive || screen.TransitionState == TransitionState.TransitionOff)
             {
                 screen.Draw(gameTime);
+                
+                // Apply tint overlay if this screen has a popup on top of it
+                if (hasPopup && !screen.IsPopup)
+                {
+                    var viewport = _graphicsDevice.Viewport;
+                    _spriteBatch.Begin();
+                    _spriteBatch.Draw(_blankTexture, 
+                        new Rectangle(0, 0, viewport.Width, viewport.Height), 
+                        Color.Black * 0.5f);
+                    _spriteBatch.End();
+                }
+                
+                // Draw black overlay for FadeToBlack transitions
+                if (screen.Transition is FadeToBlackTransition fadeToBlack)
+                {
+                    float blackAlpha = fadeToBlack.GetBlackAlpha();
+                    if (blackAlpha > 0f)
+                    {
+                        var viewport = _graphicsDevice.Viewport;
+                        _spriteBatch.Begin();
+                        _spriteBatch.Draw(_blankTexture, 
+                            new Rectangle(0, 0, viewport.Width, viewport.Height), 
+                            Color.Black * blackAlpha);
+                        _spriteBatch.End();
+                    }
+                }
             }
         }
     }
