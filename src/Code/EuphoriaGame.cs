@@ -27,8 +27,8 @@ public class EuphoriaGame : Game
 
     protected override void LoadContent()
     {
-        // Add an initial screen (e.g., GameScreen)
-        _screenManager.AddScreen(new GameScreen());
+        // Add an initial screen - start with MenuScreen to demonstrate transitions
+        _screenManager.AddScreen(new MenuScreen());
     }
 
     protected override void Update(GameTime gameTime)

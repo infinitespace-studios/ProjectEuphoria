@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Core.Screens.Transitions;
 
 namespace Core.Screens;
 
@@ -34,6 +35,27 @@ public abstract class Screen
     /// Gets or sets whether this screen is active and should receive update and draw calls.
     /// </summary>
     public bool IsActive { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets whether this screen is a popup/dialog that sits on top of other screens.
+    /// When true, underlying screens remain visible with a tint.
+    /// </summary>
+    public bool IsPopup { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the transition effect for this screen.
+    /// </summary>
+    public ScreenTransition Transition { get; set; }
+
+    /// <summary>
+    /// Gets the current state of the screen transition.
+    /// </summary>
+    public TransitionState TransitionState { get; internal set; } = TransitionState.Active;
+
+    /// <summary>
+    /// Gets the alpha value for rendering based on the current transition.
+    /// </summary>
+    public float TransitionAlpha => Transition?.GetAlpha() ?? 1.0f;
 
     /// <summary>
     /// Initializes the screen with required services.
