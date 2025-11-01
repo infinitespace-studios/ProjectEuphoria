@@ -47,9 +47,7 @@ public class EuphoriaGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        // Draw the screen manager
+        // Draw the screen manager (screens handle their own clearing)
         _screenManager?.Draw(gameTime);
 
         base.Draw(gameTime);
