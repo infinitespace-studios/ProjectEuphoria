@@ -101,14 +101,17 @@ public class ScreenManager
     }
 
     /// <summary>
-    /// Draws all screens.
+    /// Draws all active screens.
     /// </summary>
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public void Draw(GameTime gameTime)
     {
         foreach (var screen in _screens)
         {
-            screen.Draw(gameTime);
+            if (screen.IsActive)
+            {
+                screen.Draw(gameTime);
+            }
         }
     }
 

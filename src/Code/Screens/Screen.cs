@@ -26,7 +26,7 @@ public abstract class Screen
     public ScreenManager ScreenManager { get; set; }
 
     /// <summary>
-    /// Gets or sets whether this screen is active and should receive update calls.
+    /// Gets or sets whether this screen is active and should receive update and draw calls.
     /// </summary>
     public bool IsActive { get; set; } = true;
 
