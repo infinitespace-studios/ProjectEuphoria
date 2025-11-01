@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -39,6 +40,11 @@ public class ScreenManager
     /// Gets the shared SpriteBatch for all screens.
     /// </summary>
     public SpriteBatch SpriteBatch => _spriteBatch;
+
+    /// <summary>
+    /// Gets a 1x1 white texture that can be used for drawing rectangles and overlays.
+    /// </summary>
+    public Texture2D BlankTexture => _blankTexture;
 
     /// <summary>
     /// Adds a screen to the screen manager.
@@ -130,10 +136,9 @@ public class ScreenManager
         _screensToAdd.Clear();
 
         // Update all active screens and their transitions
-        for (int i = _screens.Count - 1; i >= 0; i--)
+        // Use ToList() to avoid modifying collection during iteration
+        foreach (var screen in _screens.ToList())
         {
-            var screen = _screens[i];
-            
             // Update transitions
             if (screen.Transition != null)
             {
@@ -178,6 +183,7 @@ public class ScreenManager
             }
         }
         
+        // Draw all screens
         for (int i = 0; i < _screens.Count; i++)
         {
             var screen = _screens[i];
@@ -185,34 +191,38 @@ public class ScreenManager
             if (screen.IsActive || screen.TransitionState == TransitionState.TransitionOff)
             {
                 screen.Draw(gameTime);
-                
-                // Apply tint overlay if this screen has a popup on top of it
-                if (hasPopup && !screen.IsPopup)
+            }
+        }
+        
+        // Draw all overlays in a single batch to reduce draw calls
+        var viewport = _graphicsDevice.Viewport;
+        var fullScreenRect = new Rectangle(0, 0, viewport.Width, viewport.Height);
+        bool hasOverlays = false;
+        
+        _spriteBatch.Begin();
+        
+        // Apply tint overlay if there's a popup
+        if (hasPopup)
+        {
+            _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * 0.5f);
+            hasOverlays = true;
+        }
+        
+        // Draw black overlay for FadeToBlack transitions
+        foreach (var screen in _screens)
+        {
+            if (screen.Transition is FadeToBlackTransition fadeToBlack)
+            {
+                float blackAlpha = fadeToBlack.GetBlackAlpha();
+                if (blackAlpha > 0f)
                 {
-                    var viewport = _graphicsDevice.Viewport;
-                    _spriteBatch.Begin();
-                    _spriteBatch.Draw(_blankTexture, 
-                        new Rectangle(0, 0, viewport.Width, viewport.Height), 
-                        Color.Black * 0.5f);
-                    _spriteBatch.End();
-                }
-                
-                // Draw black overlay for FadeToBlack transitions
-                if (screen.Transition is FadeToBlackTransition fadeToBlack)
-                {
-                    float blackAlpha = fadeToBlack.GetBlackAlpha();
-                    if (blackAlpha > 0f)
-                    {
-                        var viewport = _graphicsDevice.Viewport;
-                        _spriteBatch.Begin();
-                        _spriteBatch.Draw(_blankTexture, 
-                            new Rectangle(0, 0, viewport.Width, viewport.Height), 
-                            Color.Black * blackAlpha);
-                        _spriteBatch.End();
-                    }
+                    _spriteBatch.Draw(_blankTexture, fullScreenRect, Color.Black * blackAlpha);
+                    hasOverlays = true;
                 }
             }
         }
+        
+        _spriteBatch.End();
     }
 
     /// <summary>

@@ -8,15 +8,12 @@ namespace Core.Screens.Transitions;
 /// </summary>
 public class FadeToBlackTransition : ScreenTransition
 {
-    private readonly float _halfDuration;
-
     /// <summary>
     /// Initializes a new instance of the FadeToBlackTransition class.
     /// </summary>
     /// <param name="duration">Total duration of the transition in seconds (default: 1.0).</param>
     public FadeToBlackTransition(float duration = 1.0f) : base(duration)
     {
-        _halfDuration = duration / 2f;
     }
 
     /// <summary>

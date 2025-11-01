@@ -7,6 +7,9 @@ namespace Core.Screens.Transitions;
 /// </summary>
 public abstract class ScreenTransition
 {
+    private const int TRANSITION_ON = 1;
+    private const int TRANSITION_OFF = -1;
+
     /// <summary>
     /// Gets the duration of the transition in seconds.
     /// </summary>
@@ -35,7 +38,7 @@ public abstract class ScreenTransition
     {
         Duration = duration;
         Position = 0f;
-        Direction = 1;
+        Direction = TRANSITION_ON;
     }
 
     /// <summary>
@@ -44,7 +47,7 @@ public abstract class ScreenTransition
     /// <param name="transitionOn">True to transition on, false to transition off.</param>
     public void Start(bool transitionOn)
     {
-        Direction = transitionOn ? 1 : -1;
+        Direction = transitionOn ? TRANSITION_ON : TRANSITION_OFF;
         Position = transitionOn ? 0f : 1f;
     }
 
@@ -54,10 +57,10 @@ public abstract class ScreenTransition
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public virtual void Update(GameTime gameTime)
     {
-        if (IsComplete && Direction == 1)
+        if (IsComplete && Direction == TRANSITION_ON)
             return;
 
-        if (Position <= 0f && Direction == -1)
+        if (Position <= 0f && Direction == TRANSITION_OFF)
             return;
 
         float delta = (float)gameTime.ElapsedGameTime.TotalSeconds / Duration;

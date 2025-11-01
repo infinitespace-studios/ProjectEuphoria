@@ -45,7 +45,14 @@ public class OptionsScreen : Screen
         // Apply transition alpha to the dialog
         var dialogColor = new Color(60, 60, 60) * TransitionAlpha;
         
-        // Drawing dialog would go here (using a 1x1 texture from ScreenManager)
+        // Draw dialog background
+        var blankTexture = ScreenManager?.BlankTexture;
+        if (blankTexture != null)
+        {
+            SpriteBatch.Draw(blankTexture, 
+                new Rectangle(dialogX, dialogY, dialogWidth, dialogHeight), 
+                dialogColor);
+        }
         
         SpriteBatch.End();
     }
