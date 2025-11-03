@@ -18,7 +18,7 @@ public class ScreenManager
     private readonly GraphicsDevice _graphicsDevice;
     private readonly ContentManager _content;
     private readonly SpriteBatch _spriteBatch;
-    private Texture2D _blankTexture;
+    private readonly Texture2D _blankTexture;
 
     /// <summary>
     /// Initializes a new instance of the ScreenManager class.
