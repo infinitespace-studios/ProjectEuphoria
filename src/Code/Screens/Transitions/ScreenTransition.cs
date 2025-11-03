@@ -48,6 +48,15 @@ public abstract class ScreenTransition
     public void Start(bool transitionOn)
     {
         Direction = transitionOn ? TRANSITION_ON : TRANSITION_OFF;
+        
+        // Set initial position based on direction, but preserve current position if already transitioning
+        if (Position > 0f && Position < 1f)
+        {
+            // Already mid-transition, just reverse direction and keep current position
+            return;
+        }
+        
+        // Starting fresh transition
         Position = transitionOn ? 0f : 1f;
     }
 
