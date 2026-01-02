@@ -35,6 +35,8 @@ public class ScreenManagerTests
         var screenManager = new ScreenManager(gd, _content);
         var testScreen = new SplashScreen();
         screenManager.AddScreen(testScreen);
+        Assert.DoesNotContain(testScreen, screenManager.Screens);
+        screenManager.Update(new GameTime());
         Assert.Contains(testScreen, screenManager.Screens);
     }
 }
