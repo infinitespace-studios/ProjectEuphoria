@@ -48,6 +48,9 @@ jobs:
       run: |
         dotnet publish src/Platforms/DesktopGL/Euphoria.DesktopGL.csproj -c Release ${{ matrix.rids }}
       shell: bash
+    - name: Run unit tests
+      if : runner.os != 'MacOS'
+      run: dotnet test src/UnitTests/UnitTests.csproj --logger "trx;LogFileName=test-results-${{ matrix.os }}.trx"
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
