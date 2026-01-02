@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Code\**\*.cs" />
+    <Compile Include="..\Code\**\*.cs" />
   </ItemGroup>
 
 </Project>

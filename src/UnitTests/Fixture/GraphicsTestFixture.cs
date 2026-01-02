@@ -43,6 +43,8 @@ public sealed class GraphicsTestFixture : IDisposable
     public GraphicsDevice GraphicsDevice => Game.GraphicsDevice;
     public SpriteBatch SpriteBatch => _spriteBatch ?? throw new InvalidOperationException("SpriteBatch not initialized");
 
+    public IServiceProvider ServiceProvider => Game.Services;
+
     public GraphicsTestFixture()
     {
         _game = new TestGame();

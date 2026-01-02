@@ -50,6 +50,11 @@ public class Example
         gd.SetRenderTarget(renderTarget);
         gd.Clear(Color.Red);
         gd.SetRenderTarget(null);
+
+        using var stream = new System.IO.MemoryStream();
+        renderTarget.SaveAsPng(stream , 128, 128);
+        stream.Position = 0;
+        Assert.True(stream.Length > 0);
     }
 
     [Fact]
