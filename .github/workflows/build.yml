@@ -49,7 +49,10 @@ jobs:
         dotnet publish src/Platforms/DesktopGL/Euphoria.DesktopGL.csproj -c Release ${{ matrix.rids }}
       shell: bash
     - name: Run unit tests
-      if : runner.os != 'MacOS'
+      if : runner.os == 'Linux'
+      run: xvfb-run -a -s "-screen 0 800x600x24" dotnet test src/UnitTests/UnitTests.csproj --logger "trx;LogFileName=test-results-${{ matrix.os }}.trx"
+    - name: Run unit tests
+      if : runner.os == 'Windows'
       run: dotnet test src/UnitTests/UnitTests.csproj --logger "trx;LogFileName=test-results-${{ matrix.os }}.trx"
     - name: Upload
       uses: actions/upload-artifact@v4
