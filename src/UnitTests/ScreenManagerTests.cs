@@ -29,7 +29,7 @@ public class ScreenManagerTests
     }
 
     [Fact]
-    public void ScreenManager_AddSplashScreen_ShouldWork()
+    public void ScreenManager_AddSplashScreen_ShouldWork_AfterUpdateIsCalled()
     {
         GraphicsDevice gd = _graphicsFixture.GraphicsDevice;
         var screenManager = new ScreenManager(gd, _content);

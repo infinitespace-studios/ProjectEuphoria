@@ -38,6 +38,14 @@ dotnet clean Euphoria.sln
 dotnet build Euphoria.sln
 ```
 
+### Running Unit Tests
+
+You can only run Unit tests on Linux systems with an X server available. Use the following command to run the tests with a virtual framebuffer:
+
+```
+xvfb-run -a -s "-screen 0 1024x768x24" dotnet test src/UnitTests/UnitTests.csproj
+```
+
 ## Code Formatting Rules
 
 ### General C# Conventions
@@ -118,9 +126,14 @@ ProjectEuphoria/
 │   │   └── EuphoriaGame.cs   # Main game class
 │   ├── Content/              # Game assets (textures, sounds, etc.)
 │   └── Platforms/
-│       └── DesktopGL/        # Desktop platform implementation
-│           ├── Euphoria.DesktopGL.csproj
-│           └── Program.cs    # Entry point
+│   │   └── DesktopGL/        # Desktop platform implementation
+│   │       ├── Euphoria.DesktopGL.csproj
+│   │       └── Program.cs    # Entry point
+│   └── UnitTests/
+│       └──Fixture/
+│         ├── GraphicsTestCollection.cs
+          └── GraphicsTestFixture.cs # Test fixtures for graphics tests
+│       └── UnitTests.csproj
 ├── .config/
 │   └── dotnet-tools.json     # MonoGame content pipeline tools
 └── README.md
