@@ -13,3 +13,10 @@
 
 #---------------------------------- Content ---------------------------------#
 
+/importer:FbxImporter
+/processor:ModelProcessor
+/build:Models/ship-small.glb
+
+#/importer:TextureImporter
+#/processor:TextureProcessor
+#/build:Models/Textures/colormap.png
